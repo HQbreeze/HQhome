@@ -1,0 +1,53 @@
+package KCSJ;
+
+import java.sql.*;
+import javax.swing.JOptionPane;
+
+public class insert {
+	public static void insert_Student(String str1,String str2,String str3,String str4,String str5,String str6,String str7){ 
+		   try {     		   
+			Connection con = DataBaseManager.connectDB("student","root","123456.");
+		    Statement stmt = con.createStatement(); 
+		    System.out.println("操作成功！");      
+		    String lines = null; 
+		    String sql1 = "select * from test";//要执行的SQL     
+		    String sql3 = "insert into test(sno,sname,place,sclass,birthday,rtsj,zcsj)VALUES(?,?,?,?,?,?,?)";//SQL命令           
+		    PreparedStatement pst = (PreparedStatement)con.prepareStatement(sql3);   //预处理
+		     pst = con.prepareStatement(sql3);           
+		     pst.setNString(1,str1);//传值
+		     pst.setString(2,str2); 
+		     pst.setString(3,str3); 
+		     pst.setString(4,str4); 
+		     pst.setString(5,str5);
+		     pst.setString(6,str6);
+		     pst.setString(7,str7);
+		     pst.executeUpdate();      
+		     JOptionPane.showMessageDialog(null, "该次录入成功！！");      
+		     ResultSet rs = stmt.executeQuery(sql1); 
+		     System.out.println("团员编号——姓名——籍贯——专业班级——出生日期——入团时间——转出时间\n"); 
+		     while(rs.next()) { 
+		     System.out.print(rs.getString(1)+ "\t"); 
+		     System.out.print(rs.getString(2)+ "\t"); 
+		     System.out.print(rs.getString(3)+ "\t"); 
+		     System.out.print(rs.getString(4)+ "\t"); 
+		     System.out.print(rs.getString(5)+ "\t");
+		     System.out.print(rs.getString(6)+ "\t");
+		     System.out.print(rs.getString(7)+ "\t");
+		     System.out.println(); 
+		     if(lines != null){ 
+		     lines = lines+"团员编号——姓名——籍贯——专业班级——出生日期——入团时间——转出时间\n"+rs.getString(1)+"        "+rs.getString(2)+"        "+rs.getString(3) 
+		       +"       "+rs.getString(4)+"       "+rs.getString(5)+"       "+rs.getString(6)+"       "+rs.getString(7)+"\n\n"; 
+		     } 
+		     else {   
+		      lines ="数据库中所有数据：\n\n"+"团员编号——姓名——籍贯——专业班级——出生日期——入团时间——转出时间\n"+rs.getString(1)+"        "+rs.getString(2)+"       "+rs.getString(3) 
+		        +"        "+rs.getString(4)+"       "+rs.getString(5)+"       "+rs.getString(6)+"       "+rs.getString(7)+"\n"; 
+		     } 
+		    }      
+		    JOptionPane.showMessageDialog(null, lines , "显示",JOptionPane.INFORMATION_MESSAGE); 
+		   } catch (Exception e) { 
+		    e.printStackTrace(); 
+		   }
+		  } 
+
+
+}

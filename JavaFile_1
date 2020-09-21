@@ -1,0 +1,96 @@
+package KCSJ;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import javax.swing.*;
+
+public class enroll {
+	private JFrame frame;
+	private JFrame frame1;
+	private JTextField textField;
+	private JTextField textField_1;
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					enroll window = new enroll();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public enroll() {
+		in();
+	}
+	private void in() {
+		frame = new JFrame();
+		frame.setBounds(400, 200, 450, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setResizable(false);
+		frame.getContentPane().setLayout(null);
+
+		JLabel lblNewLabel = new JLabel("账号：");
+		lblNewLabel.setBounds(100, 56, 54, 15);
+		frame.getContentPane().add(lblNewLabel);
+
+		JLabel lblNewLabel_1 = new JLabel("密码：");
+		lblNewLabel_1.setBounds(100, 102, 54, 15);
+		frame.getContentPane().add(lblNewLabel_1);
+
+		textField = new JTextField();
+		textField.setBounds(196, 53, 100, 21);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+
+		textField_1 = new JTextField();
+		textField_1.setBounds(196, 96,100, 21);
+		frame.getContentPane().add(textField_1);
+		textField_1.setColumns(10);
+
+		JButton btnNewButton = new JButton("注册");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				Connection con = DataBaseManager.connectDB("student","root","123456.");				
+				PreparedStatement ps = null;
+				try {
+					ps = con.prepareStatement("insert into useradd values(?,?)");
+					ps.setString(1, textField.getText());
+					ps.setString(2, textField_1.getText());
+					ps.execute();
+					frame1 = new JFrame();
+					frame1.setBounds(400, 200, 450, 300);
+					frame1.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+					frame1.setVisible(true);
+					
+					JLabel lblNewLabel = new JLabel("注册成功！请重新登录！");
+					lblNewLabel.setBounds(95, 30, 250, 180);
+					lblNewLabel.setFont(new Font("宋体", Font.BOLD, 15));
+					frame1.getContentPane().add(lblNewLabel);
+					frame1.getContentPane().setLayout(null);					
+					frame.removeNotify();
+				    System.out.println("执行注册操作成功");
+
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton.setBounds(81, 169, 93, 23);
+		frame.getContentPane().add(btnNewButton);		
+		JButton returnButton = new JButton("返回");
+		returnButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new StudentSystem();
+				frame.removeNotify();
+			}
+		});
+		returnButton.setBounds(223, 169, 93, 23);
+		frame.getContentPane().add(returnButton);
+	}
+}

@@ -1,0 +1,46 @@
+package KCSJ;
+
+import java.sql.*;
+import javax.swing.JOptionPane;
+
+public class delete {
+	public static void delete_Student(String str){ 
+		   try { 
+			Connection con = DataBaseManager.connectDB("student","root","123456.");
+		    Statement stmt = con.createStatement(); 
+		    System.out.println("操作成功！");        
+		    String lines = null; 
+		    String sql1 = "select * from test";//要执行的SQL 
+		    String sql2 = "delete from test where sno =?"; //SQL语句，删除表数据
+		    PreparedStatement pst = (PreparedStatement)con.prepareStatement(sql2); 
+		    pst = con.prepareStatement(sql2); 
+		    pst.setString(1,str); 
+		    pst.executeUpdate();     
+		    JOptionPane.showMessageDialog(null, "已删除该条记录", "删除" ,JOptionPane.INFORMATION_MESSAGE);      
+		    ResultSet rs = stmt.executeQuery(sql1); 
+		    System.out.println("团员编号\t姓名\t籍贯\t专业班级\t出生日期\t入团时间\t转出时间"); 
+		    while(rs.next()) { 
+		     System.out.print(rs.getString(1)+ "\t"); 
+		     System.out.print(rs.getString(2)+ "\t"); 
+		     System.out.print(rs.getString(3)+ "\t"); 
+		     System.out.print(rs.getString(4)+ "\t"); 
+		     System.out.print(rs.getString(5)+ "\t");
+		     System.out.print(rs.getString(6)+ "\t");
+		     System.out.print(rs.getString(7)+ "\t");
+		     System.out.println(); 
+		     if(lines != null){ 
+		     lines = lines+"团员编号——姓名——籍贯——专业班级——出生日期——入团时间——转出时间\n"+rs.getString(1)+ "        "+rs.getString(2)+"        "+rs.getString(3) 
+		       +"        "+rs.getString(4)+"       "+rs.getString(5)+"       "+"\n\n";		     
+		     } else { 
+		      lines ="数据库中所有数据：\n\n"+"团员编号——姓名——籍贯——专业班级——出生日期——入团时间——转出时间\n"+rs.getString(1)+"        "+rs.getString(2)+"       "+rs.getString(3) 
+		        +"       "+rs.getString(4)+"       "+ rs.getString(5)+"       "+rs.getString(6)+"       "+rs.getString(7)+ "\n"; 
+		     } 
+		    }
+		    getall.getAllMessage();
+		    JOptionPane.showMessageDialog(null, lines , "显示",JOptionPane.INFORMATION_MESSAGE);     
+		   } 
+		   catch (Exception e) { 
+		    e.printStackTrace(); 
+		}   
+	} 
+}
